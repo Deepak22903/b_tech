@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "deque": "c",
+        "xutility": "c",
+        "queue_using_stack": "c",
+        "iostream": "cpp"
+    }
+}
