@@ -1,0 +1,45 @@
+ls
+ls -l
+ls -a
+cd
+cd ..
+mkdir
+rm
+rmdir
+rm -r
+cp
+cp -r
+mp
+cat
+sudo - used to execute a command with superuser previleges
+     - sudo command runs administrator commands
+
+apt -get
+     - it is a package handling utility
+
+sudo apt -get
+     - upgrade installed packages
+
+sudo apt -get install <package_name>
+     - used to install packages
+
+sudo apt -get remove <package_name>
+     - used to remove the package
+
+bs
+     - display currently running processes
+
+top
+     - display realtime system resource usage
+
+df
+     - display disk space usage
+
+du
+     - display directory space usage
+
+chmod
+     - change file permissions
+
+chmod 777 <file>
+     - used to set all permissions to file
