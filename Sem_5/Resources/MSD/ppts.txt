@@ -1,0 +1,10 @@
+https://demodslab.blogspot.com/2023/09/data-distribution-and-types-of-analytics.html
+
+https://demodslab.blogspot.com/2021/11/machine-learning-concept-decision-tree.html
+
+https://www.analyticsvidhya.com/blog/2017/09/6-probability-distributions-data-science/
+
+
+Numpy: https://demodslab.blogspot.com/2022/04/numpy-in-data-science.html
+Pandas: https://demodslab.blogspot.com/2022/04/introduction-to-pandas-library-in-data.html
+Assignment: https://demodslab.blogspot.com/2021/09/pandas-assignment-no3-solution.html

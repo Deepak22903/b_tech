@@ -1,0 +1,29 @@
+Aloha@damascus:~/CO/Saarvesh$ sudo su
+root@soham-IdeaPad-3-15ALC6-Ub:/home/soham/CO/Saarvesh# perf stat -e cache-misses ./rowWise 
+
+ Performance counter stats for './rowWise':
+
+        46,399,675      cache-misses                                                          
+
+       5.984011655 seconds time elapsed
+
+       5.975816000 seconds user
+       0.007999000 seconds sys
+
+
+root@soham-IdeaPad-3-15ALC6-Ub:/home/soham/CO/Saarvesh# perf stat -e cache-misses ./colWise 
+
+ Performance counter stats for './colWise':
+
+         4,115,577      cache-misses                                                          
+
+       4.479561019 seconds time elapsed
+
+       4.475404000 seconds user
+       0.004003000 seconds sys
+
+
+root@soham-IdeaPad-3-15ALC6-Ub:/home/soham/CO/Saarvesh# 
+
+
+

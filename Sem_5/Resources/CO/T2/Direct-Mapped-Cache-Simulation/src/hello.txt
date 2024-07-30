@@ -1,0 +1,2 @@
+What is a direct mapped cache?
+A direct-mapped cache is the simplest approach: each main memory address maps to exactly one cache block. For example, on the right is a 16-byte main memory and a 4-byte cache (four 1-byte blocks). Memory locations 0, 4, 8 and 12 all map to cache block 0. Addresses 1, 5, 9 and 13 map to cache block 1, etc.
