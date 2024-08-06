@@ -1,3 +1,4 @@
+#include <bits/stdc++.h>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -5,8 +6,26 @@ using namespace std;
 class Solution {
 public:
   int maxArea(vector<int> &heights) {
-    int res = 22;
-    return res;
+    vector<int> areas;
+    int res = 0;
+    int start = 0;
+    int end = heights.size() - 1;
+    int length = 0;
+    int breadth = heights.size() - 1;
+    while (start < end) {
+      if (heights[start] > heights[end]) {
+        length = heights[end];
+      } else
+        length = heights[start];
+      res = length * breadth;
+      areas.push_back(res);
+      breadth -= 2;
+      start++;
+      end--;
+    }
+    sort(areas.begin(), areas.end());
+    int area = areas.back();
+    return area;
   }
 };
 
