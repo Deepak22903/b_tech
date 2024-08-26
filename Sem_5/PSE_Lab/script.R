@@ -17,5 +17,8 @@ X11(width = plot_width_in, height = plot_height_in)
 
 # hist((Maths+Physics+Chemistry)/10)
 
-wealth_percentage<-c(72.2, 31.9, 26.5, 29.1, 27.3, 8.6, 22.3, 26.5, 20.4, 12.8, 25.1, 19.2, 24.1, 58.2, 68.1);
-hist(wealth_percentage);
+# wealth_percentage<-c(72.2, 31.9, 26.5, 29.1, 27.3, 8.6, 22.3, 26.5, 20.4, 12.8, 25.1, 19.2, 24.1, 58.2, 68.1);
+# hist(wealth_percentage);
+marks = c(32,35,83,74,55,68,38,35,55,66,65,42,68,72,84,67,36,42,58)
+var(marks)
+
