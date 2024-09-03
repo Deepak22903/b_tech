@@ -1,5 +1,4 @@
 #!/bin/bash
-
 string=$1
 
 # Count the number of whitespace characters

@@ -1,0 +1,165 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{lipsum}
+
+\geometry{margin=1in}
+
+\title{Synopsis: Enhancing PaletteNet with Quadtree Decomposition for Faster Image Recolorization}
+\author{[Your Name]}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+\subsection*{Importance of the Topic}
+Image recolorization plays a crucial role in various fields including digital art, design, and photo editing, where the visual impact of images is paramount. Automated recolorization methods, like PaletteNet, enable users to quickly and effectively alter the color schemes of images, significantly reducing the time and effort required in manual processes.
+
+This project focuses on enhancing PaletteNet, a deep learning model that recolorizes images based on a given target color palette. PaletteNet is effective but suffers from limitations in processing speed, which we aim to address by integrating quadtree decomposition techniques.
+
+\subsection*{Techniques and Datasets Used in Referenced Papers}
+The papers referenced in this project employ a variety of techniques and datasets for image recolorization and enhancement. For example, Cho et al. \cite{cho2017palettenet} introduced PaletteNet, a CNN-based model trained on a custom dataset of high-quality images scraped from Design-seeds.com. The model uses residual blocks and multi-task loss functions to achieve its results.
+
+In the work by Wang et al. \cite{quadtree2024}, the use of quadtree decomposition is explored for non-uniform sampling in grayscale image colorization, significantly reducing computation time while maintaining image quality. The authors utilized standard grayscale datasets and introduced a new weighting function to enhance the process.
+
+\subsection*{Drawbacks and Limitations of the Project in the Papers}
+While PaletteNet is a significant advancement in the field of automated image recolorization, it is not without its drawbacks. The primary limitation is the processing speed, which can be slow due to the convolutional layers' computational intensity \cite{cho2017palettenet}. Additionally, the model's reliance on large datasets for training means it requires substantial computational resources.
+
+The quadtree-based approach, while faster, has its own set of challenges. It may not always preserve fine details in images, especially when non-uniform sampling is aggressively applied \cite{quadtree2024}. These limitations highlight the need for further optimization in both speed and accuracy.
+
+\subsection*{Necessity of This Topic}
+Given the growing demand for fast and efficient image processing tools in the digital age, optimizing existing models like PaletteNet is crucial. The integration of quadtree decomposition represents a promising solution to improve the speed of image recolorization while maintaining high-quality outputs. This project aims to bridge the gap between speed and accuracy, making advanced recolorization techniques more accessible and practical for widespread use.
+
+\section*{Motivation}
+\addcontentsline{toc}{section}{Motivation}
+
+The motivation behind selecting this topic stems from the need to overcome the limitations of existing image recolorization methods, particularly in terms of speed. As digital content creation continues to expand, the demand for quick and efficient tools is at an all-time high. By enhancing PaletteNet with quadtree decomposition, we aim to create a more efficient tool that can be used in real-time applications, benefiting a wide range of users from graphic designers to photographers.
+
+Moreover, this project presents an opportunity to explore the integration of traditional image processing techniques with modern deep learning models, contributing to the advancement of hybrid approaches in the field of AI.
+
+\section*{Literature Review}
+\addcontentsline{toc}{section}{Literature Review}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|p{3cm}|p{3cm}|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+\hline
+Sr. No. & Name, Year & Algorithm/Approach & Dataset Used & Accuracy/Results & Advantages & Limitations & Remarks \\
+\hline
+1 & Cho et al., 2017 & PaletteNet, CNN-based & Custom dataset from Design-seeds.com & High-quality results in <1s & High-quality recolorization & Slow processing speed & \textbf{****} Well-rounded model but needs speed optimization \\
+\hline
+2 & Wang et al., 2024 & Quadtree Decomposition & Standard grayscale datasets & Fast computation & Reduced time with good quality & Loss of fine details in aggressive sampling & \textbf{****} Effective for time-sensitive tasks \\
+\hline
+% Add more rows as needed
+\end{tabular}
+\caption{Literature Review Summary}
+\label{tab:litreview}
+\end{table}
+
+\section*{Research Gaps}
+\addcontentsline{toc}{section}{Research Gaps}
+
+Through the literature review, several research gaps have been identified:
+\begin{enumerate}
+    \item Limited processing speed in CNN-based recolorization models.
+    \item High computational resource requirements for training and inference.
+    \item Inconsistent preservation of image details in non-uniform sampling methods.
+    \item Lack of integration between traditional and deep learning techniques for optimized results.
+    \item Insufficient exploration of hybrid models combining quadtree decomposition with CNNs.
+    % Add more gaps as needed
+\end{enumerate}
+
+This project will focus on addressing the first four gaps by developing a hybrid model that optimizes both speed and accuracy in image recolorization.
+
+\section*{Problem Statement and Objectives}
+\addcontentsline{toc}{section}{Problem Statement and Objectives}
+
+\textbf{Problem Statement:} To design and develop an enhanced version of PaletteNet by integrating quadtree decomposition to reduce the number of operations and decrease processing time while maintaining high-quality image recolorization.
+
+\textbf{Objectives:}
+\begin{itemize}
+    \item To reduce the processing time of PaletteNet through quadtree decomposition.
+    \item To maintain or improve the quality of recolorized images.
+    \item To develop a hybrid model that effectively combines CNN-based feature extraction with traditional image processing techniques.
+    \item To evaluate the performance of the proposed model against existing methods.
+\end{itemize}
+
+\section*{Methodology}
+\addcontentsline{toc}{section}{Methodology}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{block_diagram.png}
+\caption{Proposed System Block Diagram}
+\label{fig:blockdiagram}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{data_flow_diagram.png}
+\caption{Data Flow Diagram}
+\label{fig:dataflow}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{system_architecture.png}
+\caption{System Architecture}
+\label{fig:architecture}
+\end{figure}
+
+The methodology involves developing a hybrid model that integrates quadtree decomposition into the existing PaletteNet framework. The process includes the following steps:
+\begin{enumerate}
+    \item Preprocessing: Apply quadtree decomposition to input images.
+    \item Feature Extraction: Use the existing CNN architecture from PaletteNet for content feature extraction.
+    \item Image Recolorization: Implement the recoloring decoder with optimized operations using quadtree decomposition.
+    \item Evaluation: Test the model on a variety of datasets to measure speed and quality improvements.
+\end{enumerate}
+
+\section*{Hardware and Software Requirements}
+\addcontentsline{toc}{section}{Hardware and Software Requirements}
+
+\subsection*{Hardware Requirements}
+\begin{itemize}
+    \item NVIDIA GPU (GTX 1080 or higher)
+    \item Intel Core i7 Processor
+    \item 16GB RAM
+    \item 500GB SSD
+\end{itemize}
+
+\subsection*{Software Requirements}
+\begin{itemize}
+    \item Python 3.x
+    \item PyTorch
+    \item CUDA Toolkit
+    \item LaTeX editor (Overleaf, TeXShop)
+\end{itemize}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+
+The literature review reveals that while significant advancements have been made in image recolorization, particularly with models like PaletteNet, there are still notable gaps in speed and computational efficiency. This project aims to address these gaps by integrating quadtree decomposition into the existing PaletteNet model, potentially setting a new benchmark for speed and quality in automated image recolorization.
+
+% Add references here manually, since the bibliography environment is removed
+\section*{References}
+\addcontentsline{toc}{section}{References}
+\begin{enumerate}
+    \item Junho Cho, Sangdoo Yun, Kyoungmu Lee, Jin Young Choi. "PaletteNet: Image Recolorization With Given Color Palette," \textit{CVPR}, 2017.
+    \item Wang, H., Liu, Y., & Zhang, Y. "Quadtree Decomposition for Efficient Image Colorization," \textit{IEEE Transactions on Image Processing}, 2024.
+    \item Bahng, H., Yoo, S., Cho, W., Park, D. K., Wu, Z., & Ma, X. "Coloring with Words: Guiding Image Colorization Through Text-based Palette Generation," \textit{ECCV}, 2018.
+    % Add more references here as needed
+\end{enumerate}
+
+\end{document}
