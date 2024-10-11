@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information Form</title>
+</head>
+<body>
+    <h1>Student Information Form</h1>
+    <form id="studentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" name="rollNumber" required><br><br>
+
+        <label for="course">Course:</label>
+        <input type="text" id="course" name="course" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <br>
+
+    <a id="downloadCsv" style="display:none;" href="#">Download CSV</a>
+
+    <script>
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Capture form data
+            const name = document.getElementById('name').value;
+            const rollNumber = document.getElementById('rollNumber').value;
+            const course = document.getElementById('course').value;
+            const email = document.getElementById('email').value;
+
+            // Create CSV content
+            const csvData = [
+                ['Name', 'Roll Number', 'Course', 'Email'],
+                [name, rollNumber, course, email]
+            ];
+
+            let csvContent = "data:text/csv;charset=utf-8," 
+                + csvData.map(e => e.join(",")).join("\n");
+
+            // Create a hidden download link
+            const downloadButton = document.getElementById('downloadCsv');
+            downloadButton.setAttribute('href', encodeURI(csvContent));
+            downloadButton.setAttribute('download', 'student_info.csv');
+            downloadButton.style.display = 'block';  // Show the button
+        });
+    </script>
+</body>
+</html>
