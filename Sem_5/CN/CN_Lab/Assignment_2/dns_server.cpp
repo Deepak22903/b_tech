@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define PORT 53 // Standard DNS port
+#define PORT 9875 // Standard DNS port
 
 void process_dns_query(int sock, struct sockaddr_in client_addr,
                        socklen_t client_len) {
