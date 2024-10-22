@@ -1,2 +1,19 @@
 Title - Cmake
   make bubble sort program and build using cmake
+
+
+  Cmake is an open source, cross platform build system generator. It is used to manage the build processes in a platform independent way.
+  Cmake generates native build files for a paticular system. Allowing you to compile you code on different platform without modifing the project configuration.
+  Features of Cmake:
+    -Out of source builds
+    -Allows building binaries in a directories separate from the source code, keeping the source code tree clean
+    -Cross-platform support (Works on linux, MacOS, Windows and other)
+    -Automatic dependance management, Cmake handles dependencies between files and models automatically
+    -Support of custom targets, Cmake allows adding custom commands and targets to the building process 
+    -Modular configuration, with Cmake scripting language you can split complex builds into modular files
+
+  Basic workflow of Cmake:
+    -Create a cmake list (e.g- cmakelist.txt) that describes the project and its requirements
+    -Run Cmake to generate native build files (Structure-
+                                                  cmake[<path to source>])
+    -Build using the generated build files (command = make or cmake --build .) 
