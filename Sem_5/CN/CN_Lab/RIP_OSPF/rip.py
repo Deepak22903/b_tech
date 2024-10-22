@@ -5,6 +5,8 @@ class RIPRouter:
         self.name = name
         self.routing_table = {}  # {destination: (cost, next_hop)}
         self.neighbors = {}  # {neighbor_name: cost}
+        # Add the router itself to the routing table with cost 0 and next hop as itself
+        self.routing_table[self.name] = (0, self.name)
 
     def add_neighbor(self, neighbor, cost):
         self.neighbors[neighbor.name] = cost
