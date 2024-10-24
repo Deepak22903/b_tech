@@ -1,0 +1,3 @@
+/mnt/deepak/data/B_Tech/Sem_5/SE/Ass_10/build/CMakeFiles/BubbleSort.dir
+/mnt/deepak/data/B_Tech/Sem_5/SE/Ass_10/build/CMakeFiles/edit_cache.dir
+/mnt/deepak/data/B_Tech/Sem_5/SE/Ass_10/build/CMakeFiles/rebuild_cache.dir
