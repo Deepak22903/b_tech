@@ -1,0 +1,73 @@
+Application Layer 
+client-server architecture
+P2P architecture
+process
+Client and Server Processes
+socket
+Application Programming Interface (API)
+Application processes, sockets, and underlying transport protocol
+IP address
+port number
+Reliable Data Transfer-
+transport-layer protocol
+Throughput
+Timing
+Security
+
+TCP Services
+Connection-oriented service
+Requirements of selected network applications
+Reliable data transfer service.
+UDP Services
+Services Not Provided by Internet Transport Protocols
+Popular Internet applications, their application-layer protocols, and their underlying transport protocols
+Application-Layer Protocols
+The Web and HTTP
+Overview of HTTP
+Non-Persistent and Persistent Connections
+HTTP with Persistent Connections
+HTTP 1.0
+HTTP 1.1
+HTTP Message Format
+General format of an HTTP request message
+General format of an HTTP response message
+status codes
+HTTP methods
+User-Server Interaction: Cookies
+Keeping user state with cookies
+Web Caching
+Clients requesting objects through a Web cache
+
+Electronic Mail in the Internet
+high-level view of the Internet mail system. 
+Three major components: user agents, mail servers, and the Simple Mail Transfer Protocol (SMTP).
+SMTP
+Comparison with HTTP
+Mail Message Formats
+Mail Access Protocols
+E-mail protocols and their communicating entities
+
+SMTP
+POP3
+IMAP
+
+Web-Based E-Mail -
+HTTP
+
+DNS—The Internet’s Directory Service
+Services Provided by DNS
+Overview of How DNS Works
+hierarchy of DNS servers
+Interaction of the various DNS servers
+DNS Caching
+Recursive queries in DNS
+Iterative queries in DNS
+DNS Records and Messages
+DNS message format
+Inserting Records into the DNS Database
+Socket Programming: Creating Network Applications
+socket programming for both
+UDP and TCP
+The client-server application using UDP
+Socket Programming with TCP
+The client-server application using TCP

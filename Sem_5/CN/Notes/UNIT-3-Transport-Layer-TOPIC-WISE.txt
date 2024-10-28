@@ -1,0 +1,61 @@
+Introduction and Transport-Layer Services
+Relationship Between Transport and Network Layers
+Overview of the Transport Layer in the Internet
+transport-layer multiplexing and demultiplexing
+reliable data transfer
+congestion control
+well-known ports, registered ports and dynamic or ephemeral ports
+Connectionless Multiplexing and Demultiplexing
+Connection-Oriented Multiplexing and Demultiplexing
+Web Servers and TCP
+Connectionless Transport: UDP
+Popular Internet applications and their underlying transport protocols
+UDP Segment Structure
+UDP Checksum
+Principles of Reliable Data Transfer
+rdt1.0 – A protocol for a completely reliable channel
+rdt2.0 – A protocol for a channel with bit errors
+rdt2.1 -( positive and negative acknowledgments from the receiver to the sender).
+rdt2.2 - (the receiver must now include the sequence number of the packet being acknowledged by an ACK message)
+rdt3.0 - a protocol that reliably transfers data over a channel that can corrupt or lose packets
+Stop-and-wait protocol
+Stop-and-wait versus pipelined protocol
+Stop-and-wait and pipelined sending
+pipelined Operation
+Go-Back-N (GBN)
+Selective Repeat (SR)
+Summary of reliable data transfer mechanisms and their use
+
+Connection-Oriented Transport: TCP
+The TCP Connection
+TCP send and receive buffers
+TCP Segment Structure
+Sequence Numbers and Acknowledgment Numbers
+Round-Trip Time Estimation and Timeout
+Reliable Data Transfer
+Retransmission due to a lost acknowledgment
+Doubling the Timeout Interval
+Fast Retransmit
+Reliable Data Transfer
+Retransmission due to a lost acknowledgment
+A cumulative acknowledgment avoids retransmission of the first segment
+Go-Back-N or Selective Repeat?
+Flow Control
+TCP Connection Management
+TCP three-way handshake: segment exchange
+Closing a TCP connection
+A typical sequence of TCP states visited by a client TCP
+A typical sequence of TCP states visited by a server-side TCP
+
+Principles of Congestion Control
+The Causes and the Costs of Congestion
+Approaches to Congestion Control
+TCP self-clocking
+TCP Congestion Control
+Slow Start
+Congestion Avoidance
+FSM description of TCP congestion control
+Evolution of TCP’s congestion window (Tahoe and Reno)
+Additive-increase, multiplicative-decrease congestion control
+Explicit Congestion Notification (ECN)
+

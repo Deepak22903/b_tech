@@ -1,0 +1,39 @@
+What Is the Internet
+computer network
+hosts 
+end systems
+communication links
+packet switches
+different types of physical media
+transmission rate of a link
+packets
+routers and link-layer switches
+route or path
+Packet-switched networks
+Internet Service Providers (ISPs),
+cable modem or DSL
+IETF
+RFCs
+distributed applications
+socket interface
+What Is a Protocol?
+clients and servers
+Home Access: DSL, Cable, FTTH, Dial-Up, and Satellite
+DSLAM
+CMTS)
+Ethernet and WiFi
+Physical Media
+Circuit Switching
+Packet Switching
+Types of Delay
+Queuing Delays and Packet Loss
+Forwarding Tables and Routing Protocols
+Multiplexing in Circuit-Switched Networks
+FDM and TDM
+Protocol Layering
+The Internet protocol stack 
+and OSI reference model 
+Encapsulation
+Dencapsulation
+Interconnection of ISPs
+Store-and-Forward Transmission
