@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Streaming Platform</title>
+    <!-- <link rel="stylesheet" href="./styles.css"> -->
+    <<style>
+    
+
+
+/* General Styles */
+body {
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #1e1e2e;
+  color: #fff;
+  margin: 0;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+h1, h2 {
+  color: #89b4fa;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* Form Styles */
+form {
+  background-color: #313244;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input, select, button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  background-color: #1e1e2e;
+  color: #fff;
+}
+
+button {
+  background-color: #89b4fa;
+  color: #1e1e2e;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #7ca5e8;
+}
+
+/* List Styles */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #313244;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li a {
+  color: #89b4fa;
+  text-decoration: none;
+}
+
+li a:hover {
+  color: #7ca5e8;
+}
+
+/* Layout Styles */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+
+
+    </style>
+
+</head>
+<body>
+    <h1 style="font-size: 4rem">Music Streaming Platform Management</h1>
+
+    <!-- Listener Section -->
+    <h2>Listeners</h2>
+    <form action="/add_listener" method="POST">
+        <label for="listener_name">Name:</label>
+        <input type="text" id="listener_name" name="listener_name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Add Listener</button>
+    </form>
+
+    <ul>
+        {% for listener in listeners %}
+            <li>{{ listener[1] }} - {{ listener[2] }} <a href="/delete_listener/{{ listener[0] }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- Artist Section -->
+    <h2>Artists</h2>
+    <form action="/add_artist" method="POST">
+        <label for="artist_name">Artist Name:</label>
+        <input type="text" id="artist_name" name="artist_name" required>
+        <button type="submit">Add Artist</button>
+    </form>
+
+    <ul>
+        {% for artist in artists %}
+            <li>{{ artist[1] }} <a href="/delete_artist/{{ artist[0] }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- Song Section -->
+    <h2>Songs</h2>
+    <form action="/add_song" method="POST">
+        <label for="song_name">Song Name:</label>
+        <input type="text" id="song_name" name="song_name" required>
+        <label for="artist_id">Artist:</label>
+        <select id="artist_id" name="artist_id" required>
+            {% for artist in artists %}
+                <option value="{{ artist[0] }}">{{ artist[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add Song</button>
+    </form>
+
+    <ul>
+        {% for song in songs %}
+            <li>{{ song[1] }} by {{ song[2] }} <a href="/delete_song/{{ song[0] }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- Playlist Section -->
+    <h2>Playlists</h2>
+    <form action="/add_playlist" method="POST">
+        <label for="playlist_name">Playlist Name:</label>
+        <input type="text" id="playlist_name" name="playlist_name" required>
+        <label for="listener_id">Listener:</label>
+        <select id="listener_id" name="listener_id" required>
+            {% for listener in listeners %}
+                <option value="{{ listener[0] }}">{{ listener[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add Playlist</button>
+    </form>
+
+    <ul>
+        {% for playlist in playlists %}
+            <li>{{ playlist[1] }} by {{ playlist[2] }} <a href="/delete_playlist/{{ playlist[0] }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- PlayHistory Section -->
+    <h2>Play History</h2>
+    <form action="/add_play_history" method="POST">
+        <label for="listener_id">Listener:</label>
+        <select id="listener_id" name="listener_id" required>
+            {% for listener in listeners %}
+                <option value="{{ listener[0] }}">{{ listener[1] }}</option>
+            {% endfor %}
+        </select>
+        <label for="song_id">Song:</label>
+        <select id="song_id" name="song_id" required>
+            {% for song in songs %}
+                <option value="{{ song[0] }}">{{ song[1] }}</option>
+            {% endfor %}
+        </select>
+        <label for="play_date">Play Date:</label>
+        <input type="date" id="play_date" name="play_date" required>
+        <button type="submit">Add Play History</button>
+    </form>
+
+    <ul>
+        {% for play_history in play_history %}
+            <li>{{ play_history[1] }} played "{{ play_history[2] }}" on {{ play_history[3] }} <a href="/delete_play_history/{{ play_history[1] }}/{{ play_history[2] }}/{{ play_history[3] }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- PlaylistSong Section -->
+    <h2>Playlist Songs</h2>
+    <form action="/add_playlist_song" method="POST">
+        <label for="playlist_id">Playlist:</label>
+        <select id="playlist_id" name="playlist_id" required>
+            {% for playlist in playlists %}
+                <option value="{{ playlist[0] }}">{{ playlist[1] }}</option>
+            {% endfor %}
+        </select>
+        <label for="song_id">Song:</label>
+        <select id="song_id" name="song_id" required>
+            {% for song in songs %}
+                <option value="{{ song[0] }}">{{ song[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add Song to Playlist</button>
+    </form>
+
+    <ul>
+        {% for playlist_song in playlist_songs %}
+            <li>Playlist: {{ playlist_song[1] }} - Song: {{ playlist_song[2] }} <a href="/delete_playlist_song/{{ playlist_song[0] }}/{{ playlist_song[1] }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

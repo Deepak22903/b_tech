@@ -1,6 +1,6 @@
 -- Create Listener Table
 CREATE TABLE Listener (
-    ListenerID INT PRIMARY KEY,
+    ListenerID INT PRIMARY KEY AUTO_INCREMENT,
     ListenerName VARCHAR(100) NOT NULL,
     Email VARCHAR(100) NOT NULL
 );
