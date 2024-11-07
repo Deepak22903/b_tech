@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mariadb
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = "515e5d26aad42bd157a913173e464b17"  # Set a secret key for session management
 
 # Database connection setup
 def get_db_connection():
@@ -11,16 +13,80 @@ def get_db_connection():
             password="Deepak@22",
             host="localhost",
             port=3306,
-            database="Music_Streaming"
+            database="Music_streaming_test"
         )
         return conn
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB: {e}")
         return None
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]  # Ensure you fetch the password from the form
+
+        hashed_password = generate_password_hash(password)  # Hash the password
+        print(hashed_password)  # You can remove this later, it's just for debugging
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("INSERT INTO Listener (Username, Email, Password) VALUES (?, ?, ?)", 
+                           (username, email, hashed_password))  # Use the hashed password
+            conn.commit()
+            flash("Registration successful! Please log in.")
+            return redirect(url_for("login"))
+        except mariadb.IntegrityError:
+            flash("Username or email already exists.")
+        finally:
+            conn.close()
+    
+    return render_template("register.html")
+
+# Login Route
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT ListenerID, Password FROM Listener WHERE Username = ?", (username,))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            stored_password = user[1]  # The password stored in the database (plain text)
+
+            # Check if the input password matches the stored password
+            if stored_password == password:
+                session["user_id"] = user[0]
+                session["username"] = username
+                flash("Login successful!")
+                return redirect(url_for("index"))  # Redirect to the index page after successful login
+            else:
+                flash("Invalid username or password.")
+        else:
+            flash("Invalid username or password.")
+    
+    return render_template("login.html")  # Always render the login page when GET request or failed login
+
+# Logout Route
+@app.route("/logout")
+def logout():
+    session.clear()  # Clears the session
+    flash("You have been logged out.")
+    return redirect(url_for("login"))  # Redirect back to the login page
+
 # Route to display the data and form
 @app.route("/")
 def index():
+    if "user_id" not in session:  # If the user is not logged in
+        return redirect(url_for("login"))  # Redirect to the login page if not logged in
+    
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -46,7 +112,6 @@ def index():
     conn.close()
     return render_template("index.html", listeners=listeners, artists=artists, songs=songs,
                            playlists=playlists, play_history=play_history, playlist_songs=playlist_songs)
-
 # Route to add a listener
 @app.route("/add_listener", methods=["POST"])
 def add_listener():

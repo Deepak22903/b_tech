@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+
+    <<style>
+    
+
+
+/* General Styles */
+body {
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #1e1e2e;
+  color: #fff;
+  margin: 0;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+h1, h2 {
+  color: #89b4fa;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* Form Styles */
+form {
+  background-color: #313244;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input, select, button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  background-color: #1e1e2e;
+  color: #fff;
+}
+
+button {
+  background-color: #89b4fa;
+  color: #1e1e2e;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #7ca5e8;
+}
+
+/* List Styles */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #313244;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li a {
+  color: #89b4fa;
+  text-decoration: none;
+}
+
+li a:hover {
+  color: #7ca5e8;
+}
+
+/* Layout Styles */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <h1>Register</h1>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    
+    <form action="/register" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Register</button>
+    </form>
+
+    {% if messages and 'Registration successful!' in messages[0] %}
+        <br>
+        <a href="{{ url_for('login') }}">
+            <button>Go to Login</button>
+        </a>
+    {% endif %}
+</body>
+</html>
