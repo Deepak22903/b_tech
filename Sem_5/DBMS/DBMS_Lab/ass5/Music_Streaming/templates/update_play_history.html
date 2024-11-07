@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
 
 <style>
 
@@ -95,31 +91,22 @@ li a:hover {
 
 
     </style>
-
 </head>
-<body>
-    <h1>Login</h1>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
-
-    <form action="/login" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        
-        <button type="submit">Login</button>
-    </form>
-
-    <!-- Register Button or Link -->
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
-</body>
-</html>
+<h2>Update Play History</h2>
+<form action="" method="POST">
+    <label for="listener_id">Listener:</label>
+    <select id="listener_id" name="listener_id" required>
+        {% for listener in listeners %}
+            <option value="{{ listener[0] }}" {% if listener[0] == play_history[1] %}selected{% endif %}>{{ listener[1] }}</option>
+        {% endfor %}
+    </select>
+    <label for="song_id">Song:</label>
+    <select id="song_id" name="song_id" required>
+        {% for song in songs %}
+            <option value="{{ song[0] }}" {% if song[0] == play_history[2] %}selected{% endif %}>{{ song[1] }}</option>
+        {% endfor %}
+    </select>
+    <label for="play_date">Play Date:</label>
+    <input type="date" id="play_date" name="play_date" value="{{ play_history[3] }}" required>
+    <button type="submit">Update Play History</button>
+</form>

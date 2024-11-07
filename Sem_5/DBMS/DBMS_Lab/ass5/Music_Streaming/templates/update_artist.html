@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
-
+    <title>Update Artist</title>
+    
 <style>
 
 /* General Styles */
@@ -95,31 +95,16 @@ li a:hover {
 
 
     </style>
+<link rel="stylesheet" href="templates/styles.css">
 
 </head>
 <body>
-    <h1>Login</h1>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
-
-    <form action="/login" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+    <h1>Update Artist</h1>
+    <form action="/update_artist/{{ artist[0] }}" method="POST">
+        <label for="artist_name">Artist Name:</label>
+        <input type="text" id="artist_name" name="artist_name" value="{{ artist[1] }}" required>
         
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        
-        <button type="submit">Login</button>
+        <button type="submit">Update Artist</button>
     </form>
-
-    <!-- Register Button or Link -->
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
 </body>
 </html>

@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
-
+  
 <style>
 
 /* General Styles */
@@ -95,31 +90,16 @@ li a:hover {
 
 
     </style>
-
 </head>
-<body>
-    <h1>Login</h1>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
-
-    <form action="/login" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        
-        <button type="submit">Login</button>
-    </form>
-
-    <!-- Register Button or Link -->
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
-</body>
-</html>
+<h2>Update Song</h2>
+<form action="" method="POST">
+    <label for="song_name">Song Name:</label>
+    <input type="text" id="song_name" name="song_name" value="{{ song[1] }}" required>
+    <label for="artist_id">Artist:</label>
+    <select id="artist_id" name="artist_id" required>
+        {% for artist in artists %}
+            <option value="{{ artist[0] }}" {% if artist[0] == song[2] %}selected{% endif %}>{{ artist[1] }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Update Song</button>
+</form>

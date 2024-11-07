@@ -5,9 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Streaming Platform</title>
     <!-- <link rel="stylesheet" href="./styles.css"> -->
-    <<style>
+    <style>
     
 
+/* Remove bullet points and add padding */
+.item-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Style the name or name-email combination */
+.item-info {
+    margin-right: 10px;
+    flex-grow: 1; /* Push links to the right */
+}
+
+/* Style action links */
+.action-link {
+    margin-left: 10px;
+    text-decoration: none;
+    color: #89b4fa;
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
 
 /* General Styles */
 body {
@@ -102,6 +131,7 @@ li a:hover {
 <body>
     <h1 style="font-size: 4rem">Music Streaming Platform Management</h1>
 
+
     <!-- Listener Section -->
     <h2>Listeners</h2>
     <form action="/add_listener" method="POST">
@@ -112,11 +142,15 @@ li a:hover {
         <button type="submit">Add Listener</button>
     </form>
 
-    <ul>
-        {% for listener in listeners %}
-            <li>{{ listener[1] }} - {{ listener[2] }} <a href="/delete_listener/{{ listener[0] }}">Delete</a></li>
-        {% endfor %}
-    </ul>
+<ul class="item-list">
+    {% for listener in listeners %}
+        <li>
+            <span class="item-info">{{ listener[1] }} - {{ listener[2] }}</span>
+            <a href="/delete_listener/{{ listener[0] }}" class="action-link">Delete</a>
+            <a href="/update_listener/{{ listener[0] }}" class="action-link">Update</a>
+        </li>
+    {% endfor %}
+</ul>
 
     <!-- Artist Section -->
     <h2>Artists</h2>
@@ -126,11 +160,15 @@ li a:hover {
         <button type="submit">Add Artist</button>
     </form>
 
-    <ul>
-        {% for artist in artists %}
-            <li>{{ artist[1] }} <a href="/delete_artist/{{ artist[0] }}">Delete</a></li>
-        {% endfor %}
-    </ul>
+<ul class="item-list">
+    {% for artist in artists %}
+        <li>
+            <span class="item-info">{{ artist[1] }}</span>
+            <a href="/delete_artist/{{ artist[0] }}" class="action-link">Delete</a>
+            <a href="/update_artist/{{ artist[0] }}" class="action-link">Update</a>
+        </li>
+    {% endfor %}
+</ul>
 
     <!-- Song Section -->
     <h2>Songs</h2>
@@ -146,11 +184,15 @@ li a:hover {
         <button type="submit">Add Song</button>
     </form>
 
-    <ul>
-        {% for song in songs %}
-            <li>{{ song[1] }} by {{ song[2] }} <a href="/delete_song/{{ song[0] }}">Delete</a></li>
-        {% endfor %}
-    </ul>
+<ul class="item-list">
+    {% for song in songs %}
+        <li>
+            <span class="item-info">{{ song[1] }} by {{ song[2] }}</span>
+            <a href="/delete_song/{{ song[0] }}" class="action-link">Delete</a>
+            <a href="/update_song/{{ song[0] }}" class="action-link">Update</a>
+        </li>
+    {% endfor %}
+</ul>
 
     <!-- Playlist Section -->
     <h2>Playlists</h2>
@@ -166,11 +208,15 @@ li a:hover {
         <button type="submit">Add Playlist</button>
     </form>
 
-    <ul>
-        {% for playlist in playlists %}
-            <li>{{ playlist[1] }} by {{ playlist[2] }} <a href="/delete_playlist/{{ playlist[0] }}">Delete</a></li>
-        {% endfor %}
-    </ul>
+<ul class="item-list">
+    {% for playlist in playlists %}
+        <li>
+            <span class="item-info">{{ playlist[1] }} by {{ playlist[2] }}</span>
+            <a href="/delete_playlist/{{ playlist[0] }}" class="action-link">Delete</a>
+            <a href="/update_playlist/{{ playlist[0] }}" class="action-link">Update</a>
+        </li>
+    {% endfor %}
+</ul>
 
     <!-- PlayHistory Section -->
     <h2>Play History</h2>
@@ -192,11 +238,15 @@ li a:hover {
         <button type="submit">Add Play History</button>
     </form>
 
-    <ul>
-        {% for play_history in play_history %}
-            <li>{{ play_history[1] }} played "{{ play_history[2] }}" on {{ play_history[3] }} <a href="/delete_play_history/{{ play_history[1] }}/{{ play_history[2] }}/{{ play_history[3] }}">Delete</a></li>
-        {% endfor %}
-    </ul>
+<ul class="item-list">
+    {% for play_history in play_history %}
+        <li>
+            <span class="item-info">{{ play_history[1] }} played "{{ play_history[2] }}" on {{ play_history[3] }}</span>
+            <a href="/delete_play_history/{{ play_history[1] }}/{{ play_history[2] }}/{{ play_history[3] }}" class="action-link">Delete</a>
+            <a href="/update_play_history/{{ play_history[1] }}/{{ play_history[2] }}/{{ play_history[3] }}" class="action-link">Update</a>
+        </li>
+    {% endfor %}
+</ul>
 
     <!-- PlaylistSong Section -->
     <h2>Playlist Songs</h2>
@@ -216,11 +266,21 @@ li a:hover {
         <button type="submit">Add Song to Playlist</button>
     </form>
 
-    <ul>
-        {% for playlist_song in playlist_songs %}
-            <li>Playlist: {{ playlist_song[1] }} - Song: {{ playlist_song[2] }} <a href="/delete_playlist_song/{{ playlist_song[0] }}/{{ playlist_song[1] }}">Delete</a></li>
-        {% endfor %}
-    </ul>
+<ul class="item-list">
+    {% for playlist_song in playlist_songs %}
+        <li>
+            <span class="item-info">Playlist: {{ playlist_song[1] }} - Song: {{ playlist_song[2] }}</span>
+            <a href="/delete_playlist_song/{{ playlist_song[0] }}/{{ playlist_song[1] }}" class="action-link">Delete</a>
+            <a href="/update_playlist_song/{{ playlist_song[0] }}/{{ playlist_song[1] }}" class="action-link">Update</a>
+        </li>
+    {% endfor %}
+</ul>
+
+
+    <!-- Add this form to index.html to create the logout button -->
+<form action="{{ url_for('logout') }}" method="post">
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
 
 </body>
 </html>
