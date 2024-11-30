@@ -1,0 +1,6 @@
+-rwxrwxrwx 1 root root 34800 Nov 30 21:02 ftserve
+-rwxrwxrwx 1 root root  6504 Nov 30 21:00 ftserve.c
+-rwxrwxrwx 1 root root  1368 Nov 30 21:00 ftserve.h
+-rwxrwxrwx 1 root root 24984 Nov 30 21:02 ftserve.o
+-rwxrwxrwx 1 root root   288 Nov 30 21:00 makefile
+-rwxrwxrwx 1 root root     0 Nov 30 21:15 tmp.txt
