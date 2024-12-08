@@ -23,18 +23,18 @@ def get_db_connection():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        listener_name = request.form["listener_name"]  # Add this field to your registration form
         username = request.form["username"]
         email = request.form["email"]
-        password = request.form["password"]  # Ensure you fetch the password from the form
-
-        hashed_password = generate_password_hash(password)  # Hash the password
-        print(hashed_password)  # You can remove this later, it's just for debugging
+        password = request.form["password"]
         
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
-            cursor.execute("INSERT INTO Listener (Username, Email, Password) VALUES (?, ?, ?)", 
-                           (username, email, hashed_password))  # Use the hashed password
+            cursor.execute(
+                "INSERT INTO Listener (ListenerName, Username, Email, Password) VALUES (?, ?, ?, ?)", 
+                (listener_name, username, email, password)
+            )
             conn.commit()
             flash("Registration successful! Please log in.")
             return redirect(url_for("login"))

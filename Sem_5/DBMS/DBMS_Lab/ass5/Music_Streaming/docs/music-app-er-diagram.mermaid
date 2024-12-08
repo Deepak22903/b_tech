@@ -1,0 +1,41 @@
+erDiagram
+    Listener {
+        int ListenerID PK
+        string ListenerName
+        string Email
+    }
+    
+    Artist {
+        int ArtistID PK
+        string ArtistName
+    }
+    
+    Song {
+        int SongID PK
+        string SongName
+        int ArtistID FK
+    }
+    
+    Playlist {
+        int PlaylistID PK
+        string PlaylistName
+        int ListenerID FK
+    }
+    
+    PlayHistory {
+        int ListenerID PK, FK
+        int SongID PK, FK
+        date PlayDate PK
+    }
+    
+    PlaylistSong {
+        int PlaylistID PK, FK
+        int SongID PK, FK
+    }
+    
+    Listener ||--o{ Playlist : creates
+    Artist ||--o{ Song : has
+    Song }o--|| PlayHistory : recorded_in
+    Listener ||--o{ PlayHistory : listens
+    Playlist }o--o{ PlaylistSong : contains
+    Song }o--o{ PlaylistSong : included_in
