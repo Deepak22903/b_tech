@@ -29,7 +29,7 @@ int main() {
         // Show prompt
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
-        printf("%s%s ", PS1, cwd);
+        printf("%s %s ", PS1, cwd);
         
         // Get user input
         if (fgets(input, sizeof(input), stdin) == NULL) {
