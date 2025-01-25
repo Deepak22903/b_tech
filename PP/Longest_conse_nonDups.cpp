@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -22,6 +23,7 @@ bool is_dup(char ch) {
 }
 
 int lengthOfLongestSubstring(string s) {
+  vector<int> sh;
   if (s.length() == 0)
     return 0;
   int len = 0;
