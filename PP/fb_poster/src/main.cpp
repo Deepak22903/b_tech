@@ -1,17 +1,15 @@
 #include "../include/header.h"
 
 int main() {
-  auto now = chrono::system_clock::now();
-  time_t now_time = chrono::system_clock::to_time_t(now);
-  tm local_time = *localtime(&now_time);
-  ostringstream oss;
-  oss << put_time(&local_time, "%B %d,%Y");
-  string date = oss.str();
-  cout << date << endl;
   cout << "Generating prompt for image..." << endl;
   string prompt = generatePrompt();
+  cout << "Prompt generated successfully!" << endl;
   cout << "Generating image..." << endl;
-  generateImage(prompt);
+  string img_path = generateImage(prompt);
+  cout << "Image generated successfully with path : " << img_path << endl;
+  cout << "Publishing to facebook..." << endl;
+  string post_id = post_to_fb(img_path);
+  cout << "Post added with post_id : " << post_id << endl;
 
   return 0;
 }

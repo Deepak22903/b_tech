@@ -1,4 +1,18 @@
 #include "../include/header.h"
+#include <cstddef>
+#include <curl/curl.h>
+#include <curl/easy.h>
+#include <string>
+
+string get_date() {
+  auto now = chrono::system_clock::now();
+  time_t now_time = chrono::system_clock::to_time_t(now);
+  tm local_time = *localtime(&now_time);
+  ostringstream oss;
+  oss << put_time(&local_time, "%B %d,%Y");
+  string date = oss.str();
+  return date;
+}
 
 // Callback function to store response
 size_t WriteCallback(void *contents, size_t size, size_t nmemb,
@@ -111,7 +125,7 @@ string generatePrompt() {
   return "";
 }
 
-void generateImage(string prompt) {
+string generateImage(string prompt) {
   CURL *curl = curl_easy_init();
   string response_data;
   if (!curl)
@@ -187,8 +201,68 @@ void generateImage(string prompt) {
   if (!decoded.empty()) {
     ofstream file(filename, ios::binary);
     file.write(reinterpret_cast<const char *>(decoded.data()), decoded.size());
-    cout << "Image saved as result.jpg" << endl;
   } else {
     cerr << "Failed to decode Base64" << endl;
   }
+  return filename;
+}
+
+string post_to_fb(string generated_img) {
+  CURL *curl = curl_easy_init();
+  if (!curl) {
+    cerr << "Failed to initialize cURL" << endl;
+    return "";
+  }
+
+  string date = "(" + get_date() + ")";
+  string response_data;
+  string url = "https://graph.facebook.com/v22.0/" + FB_PAGE_ID + "/photos";
+  string caption =
+      "Family Island Free Energy ⚡🎁\n" + date + "\nhttps://gogl.to/3GEF ✅";
+
+  curl_mime *form = curl_mime_init(curl);
+  curl_mimepart *field;
+
+  // Add access token - FIXED: Don't include "access_token=" prefix
+  field = curl_mime_addpart(form);
+  curl_mime_name(field, "access_token");
+  curl_mime_data(field, FB_ACCESS_TOKEN.c_str(), CURL_ZERO_TERMINATED);
+
+  // Add image file
+  field = curl_mime_addpart(form);
+  curl_mime_name(field, "source");
+  curl_mime_filedata(field, generated_img.c_str());
+
+  // Add caption
+  field = curl_mime_addpart(form);
+  curl_mime_name(field, "caption");
+  curl_mime_data(field, caption.c_str(), CURL_ZERO_TERMINATED);
+
+  // Set up the request
+  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
+
+  string post_id;
+  CURLcode res = curl_easy_perform(curl);
+
+  if (res != CURLE_OK) {
+    cerr << "cURL request failed: " << curl_easy_strerror(res) << endl;
+  } else {
+    try {
+      json jsonData = json::parse(response_data);
+      if (jsonData.contains("id")) { // Changed from "post_id" to "id"
+        post_id = jsonData["id"];
+      } else if (jsonData.contains("error")) {
+        cerr << "Facebook API error: " << jsonData["error"]["message"] << endl;
+      }
+    } catch (json::parse_error &e) {
+      cerr << "JSON parsing error: " << e.what() << endl;
+    }
+  }
+
+  curl_mime_free(form);
+  curl_easy_cleanup(curl);
+  return post_id;
 }

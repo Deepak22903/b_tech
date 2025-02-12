@@ -1,0 +1,15 @@
+MACRO XYZ &a , &b
+    load &a
+    add &b
+    store &a
+MEND
+MACRO ABC &a , &b , &c , &d
+    XYZ &a , &b
+    XYZ &a , &c
+    XYZ &a , &d
+    store &a
+MEND
+load m
+XYZ 3 , 4
+ABC 7 , 8 , 9, 10
+END

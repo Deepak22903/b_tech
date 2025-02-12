@@ -1,0 +1,6 @@
+load &a
+add &b
+store &a
+store &a
+load m
+END
