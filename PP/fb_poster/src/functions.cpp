@@ -1,15 +1,25 @@
 #include "../include/header.h"
-#include <cstddef>
-#include <curl/curl.h>
-#include <curl/easy.h>
-#include <string>
 
+std::string image_to_base64(const std::string &image_path) {
+  // Read the image as binary data
+  std::ifstream file(image_path, std::ios::binary);
+  if (!file) {
+    throw std::runtime_error("Failed to open file: " + image_path);
+  }
+
+  std::ostringstream oss;
+  Poco::Base64Encoder encoder(oss);
+  encoder << file.rdbuf(); // Encode file content into Base64
+  encoder.close();
+
+  return oss.str();
+}
 string get_date() {
   auto now = chrono::system_clock::now();
   time_t now_time = chrono::system_clock::to_time_t(now);
   tm local_time = *localtime(&now_time);
   ostringstream oss;
-  oss << put_time(&local_time, "%B %d,%Y");
+  oss << put_time(&local_time, "%d %B %Y");
   string date = oss.str();
   return date;
 }
@@ -22,7 +32,7 @@ size_t WriteCallback(void *contents, size_t size, size_t nmemb,
   return totalSize;
 }
 
-string generatePrompt() {
+string generatePrompt(string prompt_input) {
   CURL *curl = curl_easy_init();
   if (!curl) {
     cerr << "Failed to initialize cURL" << endl;
@@ -43,37 +53,7 @@ string generatePrompt() {
   json payload = {
       {"messages",
        {{{"role", "system"}, {"content", "You are a friendly assistant"}},
-        {{"role", "user"},
-         {"content",
-          "Suggest a single prompt, don't output anything other than the "
-          "prompt. The prompt will be given to a text-to-image generation AI. "
-          "dont include and single or double quotes in the response "
-          "The image is about Family Island game and free energy, which is an "
-          "item inside the game. Here is some context about the game: "
-          "Immerse yourself in an unforgettable world of adventure with a "
-          "modern "
-          "Stone Age family! Imagine what your life would be without modern "
-          "technology—what would you do? Perhaps you would explore "
-          "territories, build houses or even entire villages; farm, harvest, "
-          "or maybe you would conquer new lands. You have an opportunity to "
-          "be on a desert island together with the heroes of the Family "
-          "Island game and try yourself in different roles: farmer, cook, "
-          "explorer, trader, and many others."
-          "Interested? Here are some more features of our game:"
-          "★ Explore wild territories, solve puzzles, find hidden objects, and "
-          "embark on thrilling adventures."
-          "★ Build and improve your little city in the middle of the ocean."
-          "★ Start your own family farm! Harvest, grow crops, and craft useful "
-          "goods to trade with others."
-          "★ Cook healthy and tasty food using ingredients found on the "
-          "island."
-          "★ Customize your village with beautiful decorations! Choose flowers "
-          "and plants to match the unique landscapes."
-          "★ Meet unusual animals: island hamsters, wild goats, and even a "
-          "dinosaur are waiting for you!"
-          "★ Help a family survive on a desert island."
-          "And that is not all! Family Island is a farm game full of "
-          "unexpected twists and captivating adventures!"}}}}};
+        {{"role", "user"}, {"content", prompt_input}}}}};
   string jsonData = payload.dump();
 
   // Set cURL options
@@ -207,7 +187,7 @@ string generateImage(string prompt) {
   return filename;
 }
 
-string post_to_fb(string generated_img) {
+string post_to_fb(string generated_img, string page_id) {
   CURL *curl = curl_easy_init();
   if (!curl) {
     cerr << "Failed to initialize cURL" << endl;
@@ -216,7 +196,7 @@ string post_to_fb(string generated_img) {
 
   string date = "(" + get_date() + ")";
   string response_data;
-  string url = "https://graph.facebook.com/v22.0/" + FB_PAGE_ID + "/photos";
+  string url = "https://graph.facebook.com/v22.0/" + page_id + "/photos";
   string caption =
       "Family Island Free Energy ⚡🎁\n" + date + "\nhttps://gogl.to/3GEF ✅";
 
@@ -265,4 +245,153 @@ string post_to_fb(string generated_img) {
   curl_mime_free(form);
   curl_easy_cleanup(curl);
   return post_id;
+}
+
+string generateImageFromImage(string img, string prompt) {
+  // Debug: Input validation
+  cout << "Debug: Starting image generation with input path: " << img << endl;
+  cout << "Debug: Prompt: " << prompt << endl;
+
+  if (img.empty() || prompt.empty()) {
+    cerr << "Error: Empty input image path or prompt" << endl;
+    return "";
+  }
+
+  // Check if input file exists
+  if (!filesystem::exists(img)) {
+    cerr << "Error: Input image file does not exist: " << img << endl;
+    return "";
+  }
+
+  string base64_image;
+  try {
+    std::string image_path = img;
+    base64_image = image_to_base64(image_path);
+
+    std::cout << "Base64 Encoded Image:\n" << base64_image << std::endl;
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
+
+  CURL *curl = curl_easy_init();
+  if (!curl) {
+    cerr << "Failed to initialize cURL" << endl;
+    return "";
+  }
+
+  // Debug: API configuration
+  cout << "Debug: Using Cloudflare account ID: " << CLOUDFLARE_ACCOUNT_ID
+       << endl;
+  cout << "Debug: Auth token length: " << CLOUDFLARE_AUTH_TOKEN.length()
+       << endl;
+
+  string response_data;
+  string url = "https://api.cloudflare.com/client/v4/accounts/" +
+               CLOUDFLARE_ACCOUNT_ID +
+               "/ai/run/@cf/runwayml/stable-diffusion-v1-5-img2img";
+
+  // Debug: Request preparation
+  json payload = {{"prompt", prompt}, {"image_b64", base64_image}};
+  string json_str = payload.dump();
+  cout << "Debug: Payload size: " << json_str.length() << " bytes" << endl;
+  cout << "Debug: JSON structure valid: "
+       << (json::accept(json_str) ? "yes" : "no") << endl;
+
+  struct curl_slist *headers = NULL;
+  headers = curl_slist_append(headers, "Content-Type: application/json");
+  headers = curl_slist_append(
+      headers, ("Authorization: Bearer " + CLOUDFLARE_AUTH_TOKEN).c_str());
+
+  // Debug: cURL verbose output
+  curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_str.c_str());
+  curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
+
+  // Add timeout to prevent hanging
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30L);
+
+  // Debug: Pre-request state
+  cout << "Debug: Sending request to URL: " << url << endl;
+
+  CURLcode res = curl_easy_perform(curl);
+
+  // Debug: Response information
+  long http_code;
+  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+  cout << "Debug: HTTP response code: " << http_code << endl;
+
+  if (res != CURLE_OK) {
+    cerr << "cURL request failed: " << curl_easy_strerror(res) << endl;
+    curl_easy_cleanup(curl);
+    curl_slist_free_all(headers);
+    return "";
+  }
+
+  // Debug: Response validation
+  cout << "Debug: Response data size: " << response_data.size() << " bytes"
+       << endl;
+  if (response_data.empty()) {
+    cerr << "Error: Empty response received" << endl;
+    curl_easy_cleanup(curl);
+    curl_slist_free_all(headers);
+    return "";
+  }
+
+  // Debug: Response content check
+  cout << "Debug: First 50 bytes of response: ";
+  for (size_t i = 0; i < min(size_t(50), response_data.size()); i++) {
+    cout << hex << setw(2) << setfill('0')
+         << (int)(unsigned char)response_data[i];
+  }
+  cout << dec << endl;
+
+  // Save the image
+  string baseName = "./output/result";
+  string extension = ".png";
+  int count = 1;
+  string filename;
+
+  // Debug: Output directory check
+  if (!filesystem::exists("./output")) {
+    cout << "Debug: Creating output directory" << endl;
+    filesystem::create_directory("./output");
+  }
+
+  do {
+    ostringstream oss;
+    oss << baseName << count << extension;
+    filename = oss.str();
+    count++;
+  } while (filesystem::exists(filename));
+
+  // Debug: File writing
+  cout << "Debug: Writing to file: " << filename << endl;
+
+  ofstream file(filename, ios::binary);
+  if (!file.is_open()) {
+    cerr << "Error: Could not open output file for writing" << endl;
+    curl_easy_cleanup(curl);
+    curl_slist_free_all(headers);
+    return "";
+  }
+
+  file.write(response_data.c_str(), response_data.size());
+  file.close();
+
+  // Debug: Output file verification
+  if (filesystem::exists(filename)) {
+    cout << "Debug: Output file created successfully. Size: "
+         << filesystem::file_size(filename) << " bytes" << endl;
+  } else {
+    cerr << "Error: Failed to create output file" << endl;
+  }
+
+  curl_easy_cleanup(curl);
+  curl_slist_free_all(headers);
+  return filename;
 }
