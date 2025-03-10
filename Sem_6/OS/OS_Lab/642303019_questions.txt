@@ -1,0 +1,98 @@
+1. Why do the system calls switch from user mode to kernel mode, why not run all the processes in kernel mode & why bother creating an new mode, just apply the security measures in one mode itself?
+Ans: 
+Security: Prevents applications from directly accessing system resources, reducing risks of malicious or accidental damage.
+Stability: A faulty user-mode application cannot crash the whole system.
+Resource Management: The OS can enforce permissions and ensure fair access to resources.
+
+
+2. When we install a certain package more often than not, you need to restart the system for the package to run properly, why is it needed? how can it be avoided?
+Ans: 
+When installing certain packages, especially system-level software (e.g., drivers, kernel updates, system services), a restart is often required for the following reasons:
+
+1. **Kernel Modules Need to Be Reloaded**
+
+   - Some packages, such as **device drivers**, install kernel modules that interact with hardware.
+   - The running kernel does not automatically reload these modules after installation.
+   - Example: Installing an NVIDIA graphics driver requires a reboot to load the new kernel module.
+
+2. **Services and Daemons Need a Fresh Start**
+
+   - Some packages install or update system **services (daemons)**, which may still be running in the background with outdated configurations or binaries.
+   - Even if the package is updated, the old instance may still be in memory.
+   - Example: Updating **systemd** or a core network service like **NetworkManager** often requires a restart.
+
+3. **Library and Binary Inconsistencies**
+
+   - Some packages update shared libraries (`.so` files on Linux, `.dll` files on Windows).
+   - If a process is already using an old version of the library, it won't automatically switch to the new one.
+   - Example: Updating **glibc** (the GNU C Library) requires a reboot to ensure all processes use the new version.
+
+4. **Kernel Updates Require Rebooting**
+   - If a package updates the **Linux kernel**, the new version won't take effect until a reboot occurs.
+   - Unlike regular software, the kernel cannot be fully replaced while running.
+   - Example: Installing a new kernel version (`linux-6.x`) requires a restart for it to load.
+
+---
+
+### **How Can a Restart Be Avoided?**
+
+1. **Manually Restarting Services**
+
+   - If the package is a **service**, restart it manually instead of rebooting:
+     ```bash
+     sudo systemctl restart <service-name>
+     ```
+   - Example: Restarting `nginx` after an update:
+     ```bash
+     sudo systemctl restart nginx
+     ```
+
+2. **Using `ldconfig` for Library Updates**
+
+   - If a package updates shared libraries, running `ldconfig` may help:
+     ```bash
+     sudo ldconfig
+     ```
+   - This refreshes the library cache without requiring a reboot.
+
+3. **Unloading and Reloading Kernel Modules**
+
+   - If a package installs a **kernel module**, reload it without rebooting:
+     ```bash
+     sudo modprobe -r <module-name>   # Unload module
+     sudo modprobe <module-name>      # Reload module
+     ```
+   - Example: After updating the Wi-Fi driver:
+     ```bash
+     sudo modprobe -r iwlwifi
+     sudo modprobe iwlwifi
+     ```
+
+4. **Using `kexec` for Kernel Updates (Advanced Users)**
+
+   - Instead of rebooting, `kexec` allows loading a new kernel without restarting the entire system:
+     ```bash
+     sudo kexec -l /boot/vmlinuz-linux --initrd=/boot/initramfs-linux.img --reuse-cmdline
+     sudo systemctl kexec
+     ```
+   - This avoids hardware reinitialization but still switches to the new kernel.
+
+5. **Using `livepatch` for Kernel Patching**
+   - **Canonical Livepatch** and **kpatch** allow applying kernel updates without rebooting.
+   - Example: Enabling **livepatch** on Ubuntu:
+     ```bash
+     sudo snap install canonical-livepatch
+     sudo canonical-livepatch enable <your-token>
+     ```
+
+3. What happens during a context switch caused by a system call? How does the kernel ensure that the calling process’s state is preserved while executing the system call?
+Ans:   
+During a **context switch** caused by a **system call**, the CPU transitions from **user mode** to **kernel mode** to execute privileged operations. The kernel ensures the **calling process's state is preserved** by:  
+
+1. **Saving Process State** – The CPU registers, program counter (PC), and stack pointer (SP) are stored in the process control block (PCB).  
+2. **Switching to Kernel Stack** – Each process has a separate kernel-mode stack to handle system calls safely.  
+3. **Executing the System Call** – The OS performs the requested operation (e.g., file read, memory allocation).  
+4. **Restoring Process State** – Once done, the saved state is reloaded, and control returns to the user process.  
+
+
+
