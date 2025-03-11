@@ -3,7 +3,10 @@
 
 using namespace std;
 
-void handle_sig(int signo) { cout << "Signal Caught: " << signo << endl; }
+void handle_sig(int signo) {
+  cout << "Signal Caught: " << signo << endl;
+  return;
+}
 
 int main(int argc, char *argv[]) {
   // raise(SIGTERM);
