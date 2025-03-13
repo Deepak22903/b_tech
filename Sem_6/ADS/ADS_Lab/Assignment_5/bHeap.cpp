@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <climits>
 #include <iostream>
 using namespace std;
 
@@ -109,6 +110,25 @@ private:
 
   Node *findNode(int targetKey) { return findNodeHelper(head, targetKey); }
 
+  Node *findMinPrevNode() {
+    if (!head)
+      return nullptr;
+    Node *temp = head;
+    int min = INT_MAX;
+    int lastmin{};
+    while (temp) {
+      if (temp->key < min) {
+        lastmin = temp->key;
+        min = temp->key;
+      }
+      temp = temp->sibling;
+    }
+    if (!lastmin)
+      temp = findNode(min);
+    temp = findNode(lastmin);
+    return temp;
+  }
+
 public:
   bHeap() : head(nullptr) {};
   Node *insert(int key) {
@@ -157,6 +177,24 @@ public:
       targetNode = targetNode->parent;
     }
   }
+
+  int findMin() { return findMinPrevNode()->sibling->key; }
+
+  void extractMin() {
+    Node *minPrev = findMinPrevNode();
+    if (!minPrev)
+      cerr << "Extraction Failed" << endl;
+    return;
+    Node *min = minPrev->sibling;
+    if (min)
+      minPrev->sibling = min->sibling;
+    Node *childs = min->child;
+    Node *nh = min->child;
+    while (childs->sibling) {
+      childs->parent = nullptr;
+    }
+    unionHeap(head, nh);
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -168,5 +206,7 @@ int main(int argc, char *argv[]) {
   bHeap.insert(50);
   // bHeap.decreaseKey(40, 5);
   bHeap.display();
+  cout << "Min Key: " << bHeap.findMin() << endl;
+
   return 0;
 }
