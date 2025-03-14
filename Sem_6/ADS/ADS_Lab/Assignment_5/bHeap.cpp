@@ -3,12 +3,14 @@
 #include <iostream>
 using namespace std;
 
+// struct block for bHeap
 struct Node {
   Node *parent;
   Node *child;
   Node *sibling;
   int key;
   int degree;
+  // Constructor
   Node(int key)
       : key(key), degree(0), parent(nullptr), child(nullptr),
         sibling(nullptr) {};
@@ -17,11 +19,14 @@ struct Node {
 class bHeap {
 public:
   Node *head;
+
   bool empty() {
     if (!head)
       return true;
     return false;
   }
+
+  // Merges two bHeaps in Asc order of their degree
   Node *mergeHeap(Node *h1, Node *h2) {
     if (!h1)
       return h2;
@@ -30,6 +35,8 @@ public:
 
     Node *head = nullptr;
     Node *tail = nullptr;
+
+    // selecting the new head
 
     if (h1->degree <= h2->degree) {
       head = h1;
@@ -40,6 +47,7 @@ public:
     }
     tail = head;
 
+    // adding nodes using the tail pointer
     while (h1 && h2) {
       if (h1->degree <= h2->degree) {
         tail->sibling = h1;
@@ -58,6 +66,8 @@ public:
 
     return head;
   }
+
+  // converts sibling node to child node
   void linkNodes(Node *curr, Node *next) {
     next->sibling = curr->child;
     next->parent = curr;
@@ -65,6 +75,7 @@ public:
     curr->degree++;
   }
 
+  // performs union Operation
   Node *unionHeap(Node *h1, Node *h2) {
     Node *nh = mergeHeap(h1, h2);
     if (!nh)
@@ -115,6 +126,7 @@ public:
 
   Node *findNode(int targetKey) { return findNodeHelper(head, targetKey); }
 
+  // returns previous node of the smallest node
   Node *findMinPrevNode() {
     if (!head)
       return nullptr;
@@ -136,12 +148,18 @@ public:
 
     return minPrev;
   }
+
+  // initialize bHeap
   bHeap() : head(nullptr) {};
+
+  // insert function
   Node *insert(int key) {
     Node *nn = new Node(key);
     head = unionHeap(head, nn);
     return head;
   }
+
+  // display function
   void displayTree(Node *h) {
     while (h) {
       cout << h->key << " ";
@@ -159,6 +177,8 @@ public:
     cout << "Binomial Heap Structure:" << endl;
     displayTree(head);
   }
+
+  // decreaseKey function
   void decreaseKey(int targetKey, int newKey) {
     if (newKey > targetKey) {
       cerr << "New Key is Bigger!" << endl;
@@ -175,6 +195,8 @@ public:
       targetNode = targetNode->parent;
     }
   }
+
+  // returns the minimum key
   int findMin() {
     if (empty()) {
       cout << "empty!" << endl;
@@ -193,6 +215,8 @@ public:
 
     return minKey;
   }
+
+  // reverses the linked list
   Node *reverseList(Node *head) {
     Node *prev = nullptr;
     Node *curr = head;
@@ -206,6 +230,7 @@ public:
     return prev;
   }
 
+  // extractMin function
   void extractMin() {
     if (!head) {
       cerr << "Binomial Heap is empty" << endl;
@@ -236,6 +261,7 @@ public:
     cerr << "Min Extraction success!" << endl;
   }
 
+  // removes the node with the specified key
   void deleteKey(int targetKey) {
     Node *targetNode = findNode(targetKey);
     if (!targetNode) {
