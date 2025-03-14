@@ -1,10 +1,11 @@
-#include <iostream>
 #include <signal.h>
-
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void handle_sig(int signo) {
-  cout << "Signal Caught: " << signo << endl;
+  printf("Signal Caught: %d", signo);
+  exit(0);
   return;
 }
 
