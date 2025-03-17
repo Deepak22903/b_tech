@@ -8,6 +8,5 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, handle_int);
   printf("Waiting for signal\n");
   pause();
-  printf("Signal received\n");
   return 0;
 }
