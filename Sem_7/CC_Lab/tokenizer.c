@@ -44,8 +44,10 @@ void tokenize_line(char *line) {
   }
 }
 
-int main() {
-  FILE *fptr = fopen("test.c", "r"); // <-- your C file
+int main(int argc, char *argv[]) {
+  char *filename = argv[1];
+
+  FILE *fptr = fopen(filename, "r"); // <-- your C file
 
   if (fptr == NULL) {
     perror("Error opening file");
