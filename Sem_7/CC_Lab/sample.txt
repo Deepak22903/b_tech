@@ -1,0 +1,3 @@
+Hello, File Handling in C!
+This is a test file.
+This line was appended.
