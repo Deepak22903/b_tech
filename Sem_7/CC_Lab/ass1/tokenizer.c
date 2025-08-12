@@ -5,7 +5,6 @@
 
 #define MAX_LEN 1000
 
-// Check if token is a keyword
 int isKeyword(const char *token) {
   const char *keywords[] = {
       "auto",     "break",  "case",    "char",   "const",    "continue",
@@ -23,10 +22,8 @@ int isKeyword(const char *token) {
   return 0;
 }
 
-// Check if token is an operator
 int isOperator(char ch) { return strchr("+-*/%=<>&|!", ch) != NULL; }
 
-// Tokenize a line and classify tokens
 void tokenize_line(char *line) {
   char *token = strtok(line, " \t\n\r;(){}[]<>=+-*/%!&|^,:\"");
 
