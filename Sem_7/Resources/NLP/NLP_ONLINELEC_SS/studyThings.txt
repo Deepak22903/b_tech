@@ -1,0 +1,14 @@
+cky
+pcfg
+inside outside probabilities
+Transition-Based Dependency
+the oracle algo
+named entity recognition
+semantics
+word sense disambiguation
+	1. lesk algo
+	2. extended algo
+	3. walker algo
+	4. random walk algo
+
+Hobbs algo for Co-reference resolution was self study and MUC conference was self study

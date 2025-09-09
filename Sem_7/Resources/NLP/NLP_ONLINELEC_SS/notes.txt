@@ -1,0 +1,61 @@
+Parsers:-
+parser is critical component that analyzes the grammatical structure of a sentence.
+arranges the words into specific groups such as nouns, verbs and phrases.
+it does this to understand the syntactical relationships between them.
+parsing is essential for machine translation, information extraction and ques answering.
+POS removes lexical ambiguity
+Parser removes syntax ambiguity
+
+Syntax:-
+refers to the way in which words are arranged together to form sentences.
+involved rules that govern the structure of sentences and how words are combined to convey meaning
+
+Relationship between words and word groups:-
+parsing finds out the relationships between various words and word groups (constituency) within a sentence.
+it determines how words depend on each other, identifying grammatical functions such as subject-verb-object relationships and modifiers.
+
+Example of words:
+words, nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions.
+
+Example of word groups (constituency):
+noun phrase, verb phrase, prepositional phrase, adjective phrase, adverb phrase, conjunction phrase
+
+Types of parsers in NLP:
+1. Dependency Parsers:- focus on the relationships between words, creating a tree structure where each node represents a word and edges represent syntactical dependencies.
+2. Constituency Parsers:- Emphasizes the hierarchical structure of sentences, breaking them down into nested constituents and representing this structure in a parse tree.
+3. Top Down Parsers:- Start from the highest level rule and break it down in its components.
+Bottom Up Parsers:- begin with the input and gradually construct the parse tree by combining components into higher level structures.
+
+
+DEPENDENCY PARSER:-
+they analyze the relationships between words
+example: the cat chases the mouse
+relationship: chases (cat, mouse)
+
+CONSTITUENCY PARSER:-
+they break sentences into nested phrases
+example: the cat chases the mouse
+parse tree: (S(NP(DT the)(NN cat))(VP(VBZ chases)(NP(DT the)(NN mouse))))
+
+TOP DOWN PARSING:-
+it starts from the highest-level rule
+example: the cat chases the mouse
+Starting from S, recursively break down into NP and VP:
+S(NP VP), NP(DT NN), VP(VBZ NP), NP(DT NN)
+
+BOTTOM UP PARSING:-
+it builds up from input tokens
+example: using CKY algorithm for the cat chases the mouse:
+Combine tokens into NP and VP, then into S:
+NP(the cat), VP(chases the mouse), S(NP VP)
+
+any verb that comes before the noun phrase it makes a verb phrase
+determiner and noun phrase becomes a noun phrase
+
+PARSING AMBIGUITY:-
+phenomenon where a single sentence can have multiple valid parse trees, each representing a different syntactic interpretation
+especially common in NLP due to inherent complexity and flexibility of human language
+as sentence grow in length and complexity, the number of possible parses can increase dramatically, demonstrating an "explosive" growth in ambiguity.
+
+the number of parse trees is called Catalan number.
+

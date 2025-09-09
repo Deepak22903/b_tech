@@ -1,0 +1,10 @@
+fox -- The : det
+fox -- quick : amod
+fox -- brown : amod
+jumps -- fox : nsubj
+jumps -- jumps : ROOT
+jumps -- over : prep
+jumps -- . : punct
+over -- dog : pobj
+dog -- the : det
+dog -- lazy : amod

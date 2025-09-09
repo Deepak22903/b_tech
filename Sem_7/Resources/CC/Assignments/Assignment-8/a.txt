@@ -1,0 +1,16 @@
+    OP      arg1    arg2
+0   -       c       
+1   *       b       (0)
+2   -       c
+3   *       b       (2)
+4   +       (1)     (3)
+5   =       a       (4)
+
+    OP  arg1        arg2    result
+0   -       c               t1
+1   *       b       t1      t2
+2   -       c               t3
+3   *       b       t3      t4
+4   +       t2      t4      t5
+5   =       a               a
+

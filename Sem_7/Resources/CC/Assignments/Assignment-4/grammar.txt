@@ -1,0 +1,7 @@
+E->TA
+A->+TA|e
+T->FB
+B->FB|e
+F->PC
+C->*C|e
+P->a|b

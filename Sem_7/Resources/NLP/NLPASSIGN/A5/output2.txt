@@ -1,0 +1,7 @@
+CKY Table:
+[{NP}, {S}, {}, {S}]
+[{}, {V, VP}, {}, {VP}]
+[{}, {}, {Det}, {NP}]
+[{}, {}, {}, {N}]
+
+The sentence 'she eats the fish' is successfully parsed!

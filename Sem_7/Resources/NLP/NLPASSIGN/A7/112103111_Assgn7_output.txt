@@ -1,0 +1,6 @@
+Lowest common hypernym between 'dog' and 'cat': [Synset('carnivore.n.01')]
+Lin similarity between 'dog' and 'cat': 0.8768009843733973
+Resnik similarity between 'dog' and 'cat': 7.911666509036577
+Jiang-Conrath distance between 'dog' and 'cat': 0.4497755285516739
+Leacock-Chodorow similarity between 'dog' and 'cat': 2.0281482472922856
+Lesk disambiguation for 'bank' in 'I went to the bank to deposit my money.': Synset('bank.v.07') - cover with ashes so to control the rate of burning

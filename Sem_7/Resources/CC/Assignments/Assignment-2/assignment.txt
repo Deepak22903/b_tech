@@ -1,0 +1,5 @@
+Write a C code that reads anthoer C code file and displays the length and type of each lexeme present.
+For Example:
+	int main()
+	lexeme[int], length=3, type=keyword
+	lexeme[main], length=4, type=identifier

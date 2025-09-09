@@ -1,0 +1,8 @@
+CKY Table:
+[{}, {}, {}, {}, {}]
+[{}, {Det}, {NP}, {}, {}]
+[{}, {}, {N}, {}, {}]
+[{}, {}, {}, {}, {}]
+[{}, {}, {}, {}, {N}]
+
+The sentence 'for the love of innovation' cannot be parsed by the grammar.

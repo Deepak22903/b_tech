@@ -1,0 +1,10 @@
+S -> NP VP
+VP -> V NP
+VP -> eats
+NP -> Det N
+NP -> she
+Det -> the
+N -> fish
+N -> love
+N -> innovation
+V -> eats
