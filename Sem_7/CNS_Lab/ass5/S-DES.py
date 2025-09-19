@@ -82,38 +82,34 @@ class SimplifiedDES:
                 text += chr(char_code)
         return text
 
-    def generate_keys(self, key_10bit):
+    def generate_keys(self, key_10bit, verbose=False):
         """
         Generate K1 and K2 from 10-bit master key
         """
-        print(f"Master key (10-bit): {key_10bit}")
+        if verbose:
+            print(f"Master key: {key_10bit}")
 
-        # Step 1: Apply P10 permutation
+        # Apply P10 permutation
         p10_result = self.permute(key_10bit, self.P10)
-        print(f"After P10: {p10_result}")
 
-        # Step 2: Split into two 5-bit halves
+        # Split into two 5-bit halves
         left_half = p10_result[:5]
         right_half = p10_result[5:]
-        print(f"Left half: {left_half}, Right half: {right_half}")
 
-        # Step 3: Left shift by 1 for K1
+        # Left shift by 1 for K1
         left_k1 = self.left_shift(left_half, 1)
         right_k1 = self.left_shift(right_half, 1)
         combined_k1 = left_k1 + right_k1
-
-        # Step 4: Apply P8 to get K1
         k1 = self.permute(combined_k1, self.P8)
-        print(f"K1: {k1}")
 
-        # Step 5: Left shift by 2 more (total 3) for K2
+        # Left shift by 2 more for K2
         left_k2 = self.left_shift(left_k1, 2)
         right_k2 = self.left_shift(right_k1, 2)
         combined_k2 = left_k2 + right_k2
-
-        # Step 6: Apply P8 to get K2
         k2 = self.permute(combined_k2, self.P8)
-        print(f"K2: {k2}")
+
+        if verbose:
+            print(f"K1: {k1}, K2: {k2}")
 
         return k1, k2
 
@@ -142,148 +138,116 @@ class SimplifiedDES:
 
         return result
 
-    def encrypt_block(self, plaintext_8bit, k1, k2):
+    def encrypt_block(self, plaintext_8bit, k1, k2, verbose=False):
         """
         Encrypt a single 8-bit block
         """
-        print(f"\n--- Encrypting block: {plaintext_8bit} ---")
+        if verbose:
+            print(f"Encrypting: {plaintext_8bit}")
 
-        # Step 1: Initial Permutation
+        # Initial Permutation
         ip_result = self.permute(plaintext_8bit, self.IP)
-        print(f"After IP: {ip_result}")
 
-        # Step 2: Split into left and right halves
-        left = ip_result[:4]
-        right = ip_result[4:]
-        print(f"Initial: Left={left}, Right={right}")
-
-        # Step 3: First Feistel round with K1
+        # Split and first round
+        left, right = ip_result[:4], ip_result[4:]
         f_output = self.f_function(right, k1)
         new_left = self.xor(left, f_output)
-        new_right = right
-        print(f"After Round 1: Left={new_left}, Right={new_right}")
 
-        # Step 4: Swap halves
-        left, right = new_right, new_left
-        print(f"After Swap: Left={left}, Right={right}")
-
-        # Step 5: Second Feistel round with K2
+        # Swap and second round
+        left, right = right, new_left
         f_output = self.f_function(right, k2)
         new_left = self.xor(left, f_output)
-        new_right = right
-        print(f"After Round 2: Left={new_left}, Right={new_right}")
 
-        # Step 6: Combine halves
-        combined = new_left + new_right
-
-        # Step 7: Final Permutation
+        # Final permutation
+        combined = new_left + right
         ciphertext = self.permute(combined, self.IP_INV)
-        print(f"Final ciphertext: {ciphertext}")
+
+        if verbose:
+            print(f"Encrypted: {ciphertext}")
 
         return ciphertext
 
-    def decrypt_block(self, ciphertext_8bit, k1, k2):
+    def decrypt_block(self, ciphertext_8bit, k1, k2, verbose=False):
         """
         Decrypt a single 8-bit block (same as encrypt but with keys reversed)
         """
-        print(f"\n--- Decrypting block: {ciphertext_8bit} ---")
+        if verbose:
+            print(f"Decrypting: {ciphertext_8bit}")
 
-        # Step 1: Initial Permutation
+        # Initial Permutation
         ip_result = self.permute(ciphertext_8bit, self.IP)
-        print(f"After IP: {ip_result}")
 
-        # Step 2: Split into left and right halves
-        left = ip_result[:4]
-        right = ip_result[4:]
-        print(f"Initial: Left={left}, Right={right}")
-
-        # Step 3: First Feistel round with K2 (reversed order)
+        # Split and first round (with K2)
+        left, right = ip_result[:4], ip_result[4:]
         f_output = self.f_function(right, k2)
         new_left = self.xor(left, f_output)
-        new_right = right
-        print(f"After Round 1: Left={new_left}, Right={new_right}")
 
-        # Step 4: Swap halves
-        left, right = new_right, new_left
-        print(f"After Swap: Left={left}, Right={right}")
-
-        # Step 5: Second Feistel round with K1 (reversed order)
+        # Swap and second round (with K1)
+        left, right = right, new_left
         f_output = self.f_function(right, k1)
         new_left = self.xor(left, f_output)
-        new_right = right
-        print(f"After Round 2: Left={new_left}, Right={new_right}")
 
-        # Step 6: Combine halves
-        combined = new_left + new_right
-
-        # Step 7: Final Permutation
+        # Final permutation
+        combined = new_left + right
         plaintext = self.permute(combined, self.IP_INV)
-        print(f"Final plaintext: {plaintext}")
+
+        if verbose:
+            print(f"Decrypted: {plaintext}")
 
         return plaintext
 
-    def encrypt_message(self, message, key_10bit, verbose=True):
+    def encrypt_message(self, message, key_10bit, verbose=False):
         """
         Encrypt a complete message
         """
         if verbose:
-            print(f"\n=== ENCRYPTING MESSAGE: '{message}' ===")
+            print(f"Encrypting: '{message}'")
 
         # Generate subkeys
-        k1, k2 = self.generate_keys(key_10bit)
+        k1, k2 = self.generate_keys(key_10bit, verbose)
 
-        # Convert message to bits
+        # Convert to bits and pad
         message_bits = self.string_to_bits(message)
-        if verbose:
-            print(f"Message in bits: {message_bits}")
-
-        # Pad message to multiple of 8 bits if necessary
         while len(message_bits) % 8 != 0:
             message_bits.append(0)
 
-        # Encrypt each 8-bit block
+        # Encrypt each block
         encrypted_bits = []
         for i in range(0, len(message_bits), 8):
             block = message_bits[i : i + 8]
-            encrypted_block = self.encrypt_block(block, k1, k2)
+            encrypted_block = self.encrypt_block(block, k1, k2, verbose)
             encrypted_bits.extend(encrypted_block)
 
-        # Convert back to string
         encrypted_message = self.bits_to_string(encrypted_bits)
 
         if verbose:
-            print(f"Encrypted message: '{encrypted_message}'")
-            print(f"Encrypted bits: {encrypted_bits}")
+            print(f"Result: '{encrypted_message}'")
 
         return encrypted_message, encrypted_bits
 
-    def decrypt_message(self, encrypted_bits, key_10bit, verbose=True):
+    def decrypt_message(self, encrypted_bits, key_10bit, verbose=False):
         """
         Decrypt a complete message from encrypted bits
         """
         if verbose:
-            print(f"\n=== DECRYPTING MESSAGE ===")
-            print(f"Encrypted bits: {encrypted_bits}")
+            print(f"Decrypting message...")
 
         # Generate subkeys
-        k1, k2 = self.generate_keys(key_10bit)
+        k1, k2 = self.generate_keys(key_10bit, verbose)
 
-        # Decrypt each 8-bit block
+        # Decrypt each block
         decrypted_bits = []
         for i in range(0, len(encrypted_bits), 8):
             block = encrypted_bits[i : i + 8]
-            decrypted_block = self.decrypt_block(block, k1, k2)
+            decrypted_block = self.decrypt_block(block, k1, k2, verbose)
             decrypted_bits.extend(decrypted_block)
 
-        # Convert back to string
         decrypted_message = self.bits_to_string(decrypted_bits)
 
         if verbose:
-            print(
-                f"Decrypted message: '{decrypted_message.rstrip(chr(0))}'"
-            )  # Remove null padding
+            print(f"Result: '{decrypted_message.rstrip(chr(0))}'")
 
-        return decrypted_message.rstrip(chr(0))  # Remove null padding
+        return decrypted_message.rstrip(chr(0))
 
 
 def generate_test_messages():
@@ -301,144 +265,85 @@ def generate_test_messages():
 
 def performance_test():
     """Test performance with different message lengths"""
-    print("\n" + "=" * 80)
-    print("PERFORMANCE ANALYSIS")
-    print("=" * 80)
+    print("\nPERFORMANCE ANALYSIS")
+    print("=" * 50)
 
-    # Initialize S-DES
     sdes = SimplifiedDES()
-
-    # Test key
     test_key = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0]
 
-    # Generate test messages
-    test_messages = generate_test_messages()
+    test_messages = {
+        "Short": "Hi",
+        "Medium": "Hello World! This is a test.",
+        "Long": "This is a much longer message for testing performance with multiple blocks.",
+        "Very Long": "".join(random.choices(string.ascii_letters + " ", k=100)),
+    }
 
-    results = []
+    print(
+        f"{'Type':<12} {'Length':<8} {'Encrypt(ms)':<12} {'Decrypt(ms)':<12} {'Status':<8}"
+    )
+    print("-" * 60)
 
     for category, message in test_messages.items():
-        print(
-            f"\n--- Testing {category.upper()} message ({len(message)} characters) ---"
-        )
-        print(f"Message: '{message[:50]}{'...' if len(message) > 50 else ''}'")
-
-        # Test encryption time
-        start_time = time.time()
+        # Encryption timing
+        start = time.time()
         encrypted_msg, encrypted_bits = sdes.encrypt_message(
             message, test_key, verbose=False
         )
-        encryption_time = time.time() - start_time
+        enc_time = (time.time() - start) * 1000
 
-        # Test decryption time
-        start_time = time.time()
+        # Decryption timing
+        start = time.time()
         decrypted_msg = sdes.decrypt_message(encrypted_bits, test_key, verbose=False)
-        decryption_time = time.time() - start_time
+        dec_time = (time.time() - start) * 1000
 
-        # Verify correctness
-        is_correct = message == decrypted_msg
+        status = "✓" if message == decrypted_msg else "✗"
 
-        results.append(
-            {
-                "category": category,
-                "length": len(message),
-                "encryption_time": encryption_time * 1000,  # Convert to milliseconds
-                "decryption_time": decryption_time * 1000,
-                "total_time": (encryption_time + decryption_time) * 1000,
-                "correct": is_correct,
-            }
-        )
-
-        print(f"Encryption time: {encryption_time * 1000:.4f} ms")
-        print(f"Decryption time: {decryption_time * 1000:.4f} ms")
-        print(f"Verification: {'✓ PASS' if is_correct else '✗ FAIL'}")
-
-    # Print summary table
-    print(f"\n{'=' * 80}")
-    print("PERFORMANCE SUMMARY")
-    print(f"{'=' * 80}")
-    print(
-        f"{'Category':<12} {'Length':<8} {'Encrypt(ms)':<12} {'Decrypt(ms)':<12} {'Total(ms)':<10} {'Status':<8}"
-    )
-    print("-" * 80)
-
-    for result in results:
         print(
-            f"{result['category']:<12} {result['length']:<8} {result['encryption_time']:<12.4f} "
-            f"{result['decryption_time']:<12.4f} {result['total_time']:<10.4f} "
-            f"{'✓' if result['correct'] else '✗':<8}"
+            f"{category:<12} {len(message):<8} {enc_time:<12.4f} {dec_time:<12.4f} {status:<8}"
         )
-
-    return results
 
 
 def main():
-    """Main demonstration of S-DES algorithm"""
+    """Main demonstration"""
     print("SIMPLIFIED DES (S-DES) IMPLEMENTATION")
-    print("=" * 50)
+    print("=" * 40)
 
-    # Initialize S-DES
     sdes = SimplifiedDES()
-
-    # Test key (10-bit)
     master_key = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0]
 
-    # Example 1: Simple demonstration
-    print("\n1. BASIC DEMONSTRATION")
-    print("-" * 30)
+    # Basic demonstration
+    print("\n1. BASIC EXAMPLE")
     test_message = "Hello"
-    print(f"Original message: '{test_message}'")
+    print(f"Original: '{test_message}'")
 
-    # Encrypt
-    encrypted_msg, encrypted_bits = sdes.encrypt_message(test_message, master_key)
+    encrypted_msg, encrypted_bits = sdes.encrypt_message(
+        test_message, master_key, verbose=True
+    )
+    decrypted_msg = sdes.decrypt_message(encrypted_bits, master_key, verbose=True)
 
-    # Decrypt
-    decrypted_msg = sdes.decrypt_message(encrypted_bits, master_key)
-
-    print(f"\nVerification: {'SUCCESS' if test_message == decrypted_msg else 'FAILED'}")
-
-    # Example 2: Step-by-step single block
-    print(f"\n\n2. DETAILED SINGLE BLOCK EXAMPLE")
-    print("-" * 40)
-    single_char = "A"
-    print(f"Encrypting single character: '{single_char}'")
-
-    # Generate keys
-    k1, k2 = sdes.generate_keys(master_key)
-
-    # Convert to bits
-    char_bits = sdes.string_to_bits(single_char)
-    print(f"Character '{single_char}' in binary: {char_bits}")
-
-    # Encrypt the 8-bit block
-    encrypted_block = sdes.encrypt_block(char_bits, k1, k2)
-
-    # Decrypt the block
-    decrypted_block = sdes.decrypt_block(encrypted_block, k1, k2)
-
-    # Convert back to character
-    decrypted_char = sdes.bits_to_string(decrypted_block)
-    print(f"Decrypted back to: '{decrypted_char}'")
     print(
-        f"Single block verification: {'SUCCESS' if single_char == decrypted_char else 'FAILED'}"
+        f"Verification: {'✓ SUCCESS' if test_message == decrypted_msg else '✗ FAILED'}"
     )
 
-    # Example 3: Performance analysis
+    # Step-by-step example
+    print(f"\n2. STEP-BY-STEP SINGLE BLOCK")
+    char = "A"
+    print(f"Processing: '{char}'")
+
+    k1, k2 = sdes.generate_keys(master_key, verbose=True)
+    char_bits = sdes.string_to_bits(char)
+    print(f"Binary: {char_bits}")
+
+    encrypted_block = sdes.encrypt_block(char_bits, k1, k2, verbose=True)
+    decrypted_block = sdes.decrypt_block(encrypted_block, k1, k2, verbose=True)
+    decrypted_char = sdes.bits_to_string(decrypted_block)
+
+    print(
+        f"Result: '{decrypted_char}' - {'✓ SUCCESS' if char == decrypted_char else '✗ FAILED'}"
+    )
+
+    # Performance test
     performance_test()
-
-    # Example 4: Different keys demonstration
-    print(f"\n\n3. DIFFERENT KEYS DEMONSTRATION")
-    print("-" * 40)
-    test_msg = "Test"
-    keys = [
-        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],  # Key 1
-        [0, 1, 0, 1, 1, 1, 1, 1, 0, 1],  # Key 2
-        [1, 1, 1, 0, 0, 1, 1, 0, 1, 0],  # Key 3
-    ]
-
-    for i, key in enumerate(keys, 1):
-        print(f"\nKey {i}: {key}")
-        encrypted, _ = sdes.encrypt_message(test_msg, key, verbose=False)
-        print(f"'{test_msg}' → Encrypted: {[ord(c) for c in encrypted]}")
 
 
 if __name__ == "__main__":
