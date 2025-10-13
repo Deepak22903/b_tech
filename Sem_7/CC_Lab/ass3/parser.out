@@ -1,0 +1,743 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expr
+Rule 1     expr -> expr PLUS term
+Rule 2     expr -> expr MINUS term
+Rule 3     expr -> term
+Rule 4     term -> term TIMES factor
+Rule 5     term -> term DIVIDE factor
+Rule 6     term -> factor
+Rule 7     factor -> power POWER factor
+Rule 8     factor -> power
+Rule 9     power -> atom
+Rule 10    atom -> NUMBER
+Rule 11    atom -> LPAREN expr RPAREN
+Rule 12    atom -> SIN LPAREN expr RPAREN
+Rule 13    atom -> COS LPAREN expr RPAREN
+Rule 14    atom -> TAN LPAREN expr RPAREN
+Rule 15    atom -> LOG LPAREN expr RPAREN
+Rule 16    atom -> SQRT LPAREN expr RPAREN
+
+Terminals, with rules where they appear
+
+COS                  : 13
+DIVIDE               : 5
+LOG                  : 15
+LPAREN               : 11 12 13 14 15 16
+MINUS                : 2
+NUMBER               : 10
+PLUS                 : 1
+POWER                : 7
+RPAREN               : 11 12 13 14 15 16
+SIN                  : 12
+SQRT                 : 16
+TAN                  : 14
+TIMES                : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+atom                 : 9
+expr                 : 1 2 11 12 13 14 15 16 0
+factor               : 4 5 6 7
+power                : 7 8
+term                 : 1 2 3 4 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expr
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 1
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 1
+
+    (0) S' -> expr .
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 2
+
+    (3) expr -> term .
+    (4) term -> term . TIMES factor
+    (5) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 3 (expr -> term .)
+    MINUS           reduce using rule 3 (expr -> term .)
+    $end            reduce using rule 3 (expr -> term .)
+    RPAREN          reduce using rule 3 (expr -> term .)
+    TIMES           shift and go to state 15
+    DIVIDE          shift and go to state 16
+
+
+state 3
+
+    (6) term -> factor .
+
+    TIMES           reduce using rule 6 (term -> factor .)
+    DIVIDE          reduce using rule 6 (term -> factor .)
+    PLUS            reduce using rule 6 (term -> factor .)
+    MINUS           reduce using rule 6 (term -> factor .)
+    $end            reduce using rule 6 (term -> factor .)
+    RPAREN          reduce using rule 6 (term -> factor .)
+
+
+state 4
+
+    (7) factor -> power . POWER factor
+    (8) factor -> power .
+
+    POWER           shift and go to state 17
+    TIMES           reduce using rule 8 (factor -> power .)
+    DIVIDE          reduce using rule 8 (factor -> power .)
+    PLUS            reduce using rule 8 (factor -> power .)
+    MINUS           reduce using rule 8 (factor -> power .)
+    $end            reduce using rule 8 (factor -> power .)
+    RPAREN          reduce using rule 8 (factor -> power .)
+
+
+state 5
+
+    (9) power -> atom .
+
+    POWER           reduce using rule 9 (power -> atom .)
+    TIMES           reduce using rule 9 (power -> atom .)
+    DIVIDE          reduce using rule 9 (power -> atom .)
+    PLUS            reduce using rule 9 (power -> atom .)
+    MINUS           reduce using rule 9 (power -> atom .)
+    $end            reduce using rule 9 (power -> atom .)
+    RPAREN          reduce using rule 9 (power -> atom .)
+
+
+state 6
+
+    (10) atom -> NUMBER .
+
+    POWER           reduce using rule 10 (atom -> NUMBER .)
+    TIMES           reduce using rule 10 (atom -> NUMBER .)
+    DIVIDE          reduce using rule 10 (atom -> NUMBER .)
+    PLUS            reduce using rule 10 (atom -> NUMBER .)
+    MINUS           reduce using rule 10 (atom -> NUMBER .)
+    $end            reduce using rule 10 (atom -> NUMBER .)
+    RPAREN          reduce using rule 10 (atom -> NUMBER .)
+
+
+state 7
+
+    (11) atom -> LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 18
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 8
+
+    (12) atom -> SIN . LPAREN expr RPAREN
+
+    LPAREN          shift and go to state 19
+
+
+state 9
+
+    (13) atom -> COS . LPAREN expr RPAREN
+
+    LPAREN          shift and go to state 20
+
+
+state 10
+
+    (14) atom -> TAN . LPAREN expr RPAREN
+
+    LPAREN          shift and go to state 21
+
+
+state 11
+
+    (15) atom -> LOG . LPAREN expr RPAREN
+
+    LPAREN          shift and go to state 22
+
+
+state 12
+
+    (16) atom -> SQRT . LPAREN expr RPAREN
+
+    LPAREN          shift and go to state 23
+
+
+state 13
+
+    (1) expr -> expr PLUS . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    term                           shift and go to state 24
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 14
+
+    (2) expr -> expr MINUS . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    term                           shift and go to state 25
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 15
+
+    (4) term -> term TIMES . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    factor                         shift and go to state 26
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 16
+
+    (5) term -> term DIVIDE . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    factor                         shift and go to state 27
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 17
+
+    (7) factor -> power POWER . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    power                          shift and go to state 4
+    factor                         shift and go to state 28
+    atom                           shift and go to state 5
+
+state 18
+
+    (11) atom -> LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 29
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 19
+
+    (12) atom -> SIN LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 30
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 20
+
+    (13) atom -> COS LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 31
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 21
+
+    (14) atom -> TAN LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 32
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 22
+
+    (15) atom -> LOG LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 33
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 23
+
+    (16) atom -> SQRT LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS term
+    (2) expr -> . expr MINUS term
+    (3) expr -> . term
+    (4) term -> . term TIMES factor
+    (5) term -> . term DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . power POWER factor
+    (8) factor -> . power
+    (9) power -> . atom
+    (10) atom -> . NUMBER
+    (11) atom -> . LPAREN expr RPAREN
+    (12) atom -> . SIN LPAREN expr RPAREN
+    (13) atom -> . COS LPAREN expr RPAREN
+    (14) atom -> . TAN LPAREN expr RPAREN
+    (15) atom -> . LOG LPAREN expr RPAREN
+    (16) atom -> . SQRT LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 6
+    LPAREN          shift and go to state 7
+    SIN             shift and go to state 8
+    COS             shift and go to state 9
+    TAN             shift and go to state 10
+    LOG             shift and go to state 11
+    SQRT            shift and go to state 12
+
+    expr                           shift and go to state 34
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+    power                          shift and go to state 4
+    atom                           shift and go to state 5
+
+state 24
+
+    (1) expr -> expr PLUS term .
+    (4) term -> term . TIMES factor
+    (5) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 1 (expr -> expr PLUS term .)
+    MINUS           reduce using rule 1 (expr -> expr PLUS term .)
+    $end            reduce using rule 1 (expr -> expr PLUS term .)
+    RPAREN          reduce using rule 1 (expr -> expr PLUS term .)
+    TIMES           shift and go to state 15
+    DIVIDE          shift and go to state 16
+
+
+state 25
+
+    (2) expr -> expr MINUS term .
+    (4) term -> term . TIMES factor
+    (5) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 2 (expr -> expr MINUS term .)
+    MINUS           reduce using rule 2 (expr -> expr MINUS term .)
+    $end            reduce using rule 2 (expr -> expr MINUS term .)
+    RPAREN          reduce using rule 2 (expr -> expr MINUS term .)
+    TIMES           shift and go to state 15
+    DIVIDE          shift and go to state 16
+
+
+state 26
+
+    (4) term -> term TIMES factor .
+
+    TIMES           reduce using rule 4 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 4 (term -> term TIMES factor .)
+    PLUS            reduce using rule 4 (term -> term TIMES factor .)
+    MINUS           reduce using rule 4 (term -> term TIMES factor .)
+    $end            reduce using rule 4 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 4 (term -> term TIMES factor .)
+
+
+state 27
+
+    (5) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 5 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 5 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 5 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 5 (term -> term DIVIDE factor .)
+    $end            reduce using rule 5 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 5 (term -> term DIVIDE factor .)
+
+
+state 28
+
+    (7) factor -> power POWER factor .
+
+    TIMES           reduce using rule 7 (factor -> power POWER factor .)
+    DIVIDE          reduce using rule 7 (factor -> power POWER factor .)
+    PLUS            reduce using rule 7 (factor -> power POWER factor .)
+    MINUS           reduce using rule 7 (factor -> power POWER factor .)
+    $end            reduce using rule 7 (factor -> power POWER factor .)
+    RPAREN          reduce using rule 7 (factor -> power POWER factor .)
+
+
+state 29
+
+    (11) atom -> LPAREN expr RPAREN .
+
+    POWER           reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+    TIMES           reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+    $end            reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 11 (atom -> LPAREN expr RPAREN .)
+
+
+state 30
+
+    (12) atom -> SIN LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 35
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 31
+
+    (13) atom -> COS LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 36
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 32
+
+    (14) atom -> TAN LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 37
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 33
+
+    (15) atom -> LOG LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 38
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 34
+
+    (16) atom -> SQRT LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS term
+    (2) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 39
+    PLUS            shift and go to state 13
+    MINUS           shift and go to state 14
+
+
+state 35
+
+    (12) atom -> SIN LPAREN expr RPAREN .
+
+    POWER           reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+    TIMES           reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+    PLUS            reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+    MINUS           reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+    $end            reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 12 (atom -> SIN LPAREN expr RPAREN .)
+
+
+state 36
+
+    (13) atom -> COS LPAREN expr RPAREN .
+
+    POWER           reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+    TIMES           reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+    PLUS            reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+    MINUS           reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+    $end            reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 13 (atom -> COS LPAREN expr RPAREN .)
+
+
+state 37
+
+    (14) atom -> TAN LPAREN expr RPAREN .
+
+    POWER           reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+    TIMES           reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+    PLUS            reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+    MINUS           reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+    $end            reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 14 (atom -> TAN LPAREN expr RPAREN .)
+
+
+state 38
+
+    (15) atom -> LOG LPAREN expr RPAREN .
+
+    POWER           reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+    TIMES           reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+    PLUS            reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+    MINUS           reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+    $end            reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 15 (atom -> LOG LPAREN expr RPAREN .)
+
+
+state 39
+
+    (16) atom -> SQRT LPAREN expr RPAREN .
+
+    POWER           reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+    TIMES           reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+    PLUS            reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+    MINUS           reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+    $end            reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 16 (atom -> SQRT LPAREN expr RPAREN .)
+
